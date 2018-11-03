@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 body {
   background: #24C6DC;
    /* fallback for old browsers */
@@ -6,7 +10,6 @@ body {
   background: linear-gradient(to left, #24C6DC , #514A9D);
    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
 .App {
   position: absolute;
   top: 50%;
@@ -19,8 +22,15 @@ h1 {
   color: #fff;
 }
 
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 input[type="email"] {
-  /* width: 480px; */
+  /* width: 50vw; */
   margin-top: 20px;
   padding: 10px;
   font-size: 2.5em;
@@ -30,7 +40,7 @@ input[type="email"] {
 }
 
 input[type="password"] {
-  /* width: 480px; */
+  /* width: 50vw; */
   margin-top: 20px;
   padding: 10px;
   font-size: 2.5em;
