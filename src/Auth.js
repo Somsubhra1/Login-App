@@ -18,12 +18,11 @@ class Auth extends Component {
     this.login = this.login.bind(this);
     this.signup = this.signup.bind(this);
     this.logout = this.logout.bind(this);
+    this.google = this.google.bind(this);
   }
 
   login(event) {
     event.preventDefault();
-
-
 
     const email = this.refs.email.value;
     const password = this.refs.password.value;
@@ -38,6 +37,8 @@ class Auth extends Component {
       var lout = document.getElementById('logout');
       var lin = document.getElementById('login');
       var sin = document.getElementById('signup');
+      var sgin = document.getElementById('google');
+      sgin.classList.add('hide');
       emailField.classList.add('hide');
       passField.classList.add('hide');
       lin.classList.add('hide');
@@ -85,7 +86,6 @@ class Auth extends Component {
       console.log(err);
       this.setState({err: err });
     });
-
   }
 
   logout(event) {
@@ -96,6 +96,8 @@ class Auth extends Component {
     var lout = document.getElementById('logout');
     var lin = document.getElementById('login');
     var sin = document.getElementById('signup');
+    var sgin = document.getElementById('google');
+    sgin.classList.remove('hide');
     emailField.classList.remove('hide');
     passField.classList.remove('hide');
     lin.classList.remove('hide');
@@ -103,6 +105,41 @@ class Auth extends Component {
     lout.classList.add('hide');
     var err = 'Thank you for visiting.';
     this.setState({err: err});
+  }
+
+  google(event) {
+    event.preventDefault();
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var promise = firebase.auth().signInWithPopup(provider);
+
+    promise
+    .then(result => {
+      var user = result.user;
+      var err = 'Welcome ' + user.email;
+      console.log(result);
+      firebase.database().ref('users/' + user.uid).set({
+        email: user.email,
+        name: user.displayName
+      });
+      this.setState({err: err});
+      var emailField = document.getElementById('email');
+      var passField = document.getElementById('pass');
+      var lout = document.getElementById('logout');
+      var lin = document.getElementById('login');
+      var sin = document.getElementById('signup');
+      var sgin = document.getElementById('google');
+      sgin.classList.add('hide');
+      emailField.classList.add('hide');
+      passField.classList.add('hide');
+      lin.classList.add('hide');
+      sin.classList.add('hide');
+      lout.classList.remove('hide');
+    })
+    .catch(e => {
+      var err = e.message;
+      this.setState({err: err });
+    })
+
   }
 
   render(){
@@ -115,8 +152,8 @@ class Auth extends Component {
 
         <button onClick={this.login} id="login">Log In</button>
         <button onClick={this.signup} id="signup">Sign Up</button>
-        <button id="logout" className="hide" onClick={this.logout}>Log Out</button>
-
+        <button id="logout" className="hide" onClick={this.logout}>Log Out</button><br />
+        <button id="google" className="google" onClick={this.google}>Sign In with Google</button>
       </div>
     );
   }
